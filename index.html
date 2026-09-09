@@ -122,6 +122,29 @@
   }
   .nav-cta:hover{background:var(--gold); color:var(--navy-0);}
 
+
+  /* ---------- BRAND LOGO ---------- */
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--text);
+  }
+  .brand-logo{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+    flex:0 0 42px;
+  }
+  .brand-text{
+    font-family:'Inter',system-ui,sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.01em;
+  }
+  .brand-text .brand-accent{color:var(--gold);}
+
   /* ---------- HERO ---------- */
   .hero{
     padding:88px 0 96px;
@@ -395,8 +418,17 @@
   }
   @media (max-width:520px){
     .wrap{padding:0 20px;}
+    .brand-logo{width:36px;height:36px;flex-basis:36px;}
+    .brand-text{font-size:.92rem;}
   }
 </style>
+
+  <meta name="description" content="Deep Data Company provides data engineering, data warehousing, security & governance, and business intelligence services.">
+  <meta name="theme-color" content="#0F1729">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="canonical" href="https://deepdatacompany.com/">
 </head>
 <body>
 
@@ -404,7 +436,10 @@
 
 <header class="nav">
   <div class="wrap">
-    <div class="brand">Deep Data Company</div>
+    <a class="brand" href="/" aria-label="Deep Data Company home">
+      <img class="brand-logo" src="/favicon.png" alt="" width="42" height="42">
+      <span class="brand-text">Deep <span class="brand-accent">Data</span> Company</span>
+    </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
       <li><a href="#approach">Approach</a></li>
