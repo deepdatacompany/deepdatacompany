@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Data Company — Data Warehousing, Pipelines &amp; BI Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-0:#0B1220;
+    --navy-1:#0F1729;
+    --navy-2:#16213A;
+    --navy-3:#1E2C4A;
+    --gold:#E3A857;
+    --gold-soft:rgba(227,168,87,0.14);
+    --teal:#4FC3B0;
+    --teal-soft:rgba(79,195,176,0.14);
+    --text:#EDEFF4;
+    --muted:#8C96AC;
+    --line:rgba(237,239,244,0.09);
+    --maxw:1120px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background-color:var(--navy-1);
+    background-image:radial-gradient(circle, rgba(237,239,244,0.05) 1px, transparent 1.7px);
+    background-size:26px 26px;
+    background-repeat:repeat;
+    background-attachment:fixed;
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+
+  .bg-aurora{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background-repeat:no-repeat;
+    background-image:
+      radial-gradient(circle 480px, rgba(227,168,87,0.18), transparent 70%),
+      radial-gradient(circle 440px, rgba(79,195,176,0.16), transparent 70%),
+      radial-gradient(circle 400px, rgba(79,195,176,0.09), transparent 70%);
+    background-size:1100px 1100px, 1000px 1000px, 900px 900px;
+    background-position:8% -6%, 104% 18%, 48% 104%;
+    animation:auroraDrift 34s ease-in-out infinite alternate;
+  }
+  @keyframes auroraDrift{
+    0%{background-position:8% -6%, 104% 18%, 48% 104%;}
+    50%{background-position:15% 3%, 96% 27%, 42% 96%;}
+    100%{background-position:8% -6%, 104% 18%, 48% 104%;}
+  }
+  h1,h2,h3,.display{
+    font-family:'Bricolage Grotesque',system-ui,sans-serif;
+    font-weight:700;
+    line-height:1.12;
+    letter-spacing:-0.015em;
+    margin:0;
+  }
+  h3{font-weight:600; letter-spacing:-0.005em;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+  img,svg{display:block;max-width:100%;}
+  button{font-family:inherit;}
+
+  :focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    background:rgba(15,23,41,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-1px; height:2px;
+    background:linear-gradient(90deg, transparent, var(--gold), var(--teal), transparent);
+    opacity:0.55;
+  }
+  .nav .wrap{
+    position:relative;
+    display:flex; align-items:center; justify-content:space-between;
+    height:72px;
+  }
+  .brand{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:0.01em;
+  }
+  .brand .dot{color:var(--gold);}
+  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
+  .nav-links a{
+    font-size:0.92rem; color:var(--muted); text-decoration:none;
+    transition:color .18s ease;
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    font-size:0.88rem;
+    padding:9px 18px;
+    border:1px solid var(--gold);
+    border-radius:100px;
+    color:var(--gold);
+    text-decoration:none;
+    transition:background .18s ease, color .18s ease;
+  }
+  .nav-cta:hover{background:var(--gold); color:var(--navy-0);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:88px 0 96px;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-size:0.85rem;
+    color:var(--teal);
+    margin:0 0 18px;
+    font-weight:500;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:3px; border-radius:2px;
+    background:linear-gradient(90deg, var(--gold), var(--teal));
+    display:inline-block;
+  }
+  .hero h1{
+    font-size:clamp(2.3rem, 4.4vw, 3.4rem);
+    max-width:16ch;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(100deg, var(--gold), var(--teal));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.lead{
+    color:var(--muted);
+    font-size:1.05rem;
+    max-width:46ch;
+    margin:22px 0 30px;
+  }
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:linear-gradient(135deg, #F2C989, var(--gold));
+    color:var(--navy-0);
+    border:none;
+    padding:13px 26px;
+    border-radius:100px;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    box-shadow:0 8px 22px -8px rgba(227,168,87,0.45);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 30px -8px rgba(227,168,87,0.6);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:13px 26px;
+    border-radius:100px;
+    font-weight:500;
+    font-size:0.95rem;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+    transition:border-color .18s ease;
+  }
+  .btn-ghost:hover{border-color:var(--muted);}
+
+  /* pipeline animation */
+  .pipeline-frame{
+    background:linear-gradient(160deg, var(--navy-2), var(--navy-3));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:26px 20px 18px;
+    box-shadow:0 30px 70px -30px rgba(227,168,87,0.22), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .pipeline-frame .cap{
+    display:flex; justify-content:space-between;
+    font-size:0.72rem; color:var(--muted);
+    margin-bottom:6px;
+    padding:0 6px;
+  }
+  .pipe-particle{animation:flow 3.6s linear infinite;}
+  .pipe-particle.p2{animation-delay:1.2s;}
+  .pipe-particle.p3{animation-delay:2.4s;}
+  @keyframes flow{
+    0%{offset-distance:0%; opacity:0;}
+    6%{opacity:1;}
+    92%{opacity:1;}
+    100%{offset-distance:100%; opacity:0;}
+  }
+  .node-pulse{animation:pulse 2.8s ease-in-out infinite; transform-origin:center;}
+  @keyframes pulse{0%,100%{opacity:0.55;} 50%{opacity:1;}}
+
+  /* ---------- SECTION HEADS ---------- */
+  .section{padding:88px 0;}
+  .section-head{max-width:560px; margin-bottom:56px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:clamp(1.7rem, 3vw, 2.3rem);}
+  .section-head p{color:var(--muted); margin-top:14px; font-size:1rem;}
+  .section.alt{
+    background-color:var(--navy-0);
+    background-image:radial-gradient(circle, rgba(237,239,244,0.05) 1px, transparent 1.7px);
+    background-size:26px 26px;
+    background-repeat:repeat;
+  }
+
+  /* ---------- SERVICE TAB GRID ---------- */
+  .service-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(220px, 1fr));
+    gap:22px;
+    max-width:680px;
+  }
+  .service-tile{
+    aspect-ratio:1/1;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    text-align:left;
+    background:linear-gradient(155deg, var(--navy-2), var(--navy-3));
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:26px;
+    cursor:pointer;
+    color:var(--text);
+    transition:border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .service-tile:hover, .service-tile:focus-visible{
+    border-color:var(--stage-color);
+    transform:translateY(-4px);
+    box-shadow:0 20px 45px -20px color-mix(in srgb, var(--stage-color) 55%, transparent);
+  }
+  .service-tile .icon-badge{
+    width:48px; height:48px;
+    border-radius:13px;
+    display:flex; align-items:center; justify-content:center;
+    background:color-mix(in srgb, var(--stage-color) 16%, transparent);
+    margin-bottom:auto;
+  }
+  .service-tile .icon{color:var(--stage-color);}
+  .service-tile h3{font-size:1.15rem; margin-bottom:8px;}
+  .service-tile .teaser{font-size:0.88rem; color:var(--muted); flex-grow:1;}
+  .service-tile .open-cue{font-size:0.82rem; color:var(--stage-color); font-weight:500; margin-top:14px;}
+  .tile-list{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:5px;}
+  .tile-list li{font-size:0.82rem; color:var(--muted); padding-left:14px; position:relative;}
+  .tile-list li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:5px; height:5px; border-radius:50%;
+    background:var(--stage-color);
+  }
+
+  @media (max-width:560px){
+    .service-grid{grid-template-columns:1fr; max-width:340px;}
+    .service-tile{aspect-ratio:auto; padding:22px;}
+  }
+
+  /* ---------- DETAIL VIEW ---------- */
+  .service-detail{display:none;}
+  .service-detail.is-active{display:block;}
+  .detail-hero{
+    position:relative;
+    padding:56px 0 40px;
+    border-bottom:1px solid var(--line);
+    background:radial-gradient(ellipse 600px 300px at 15% 0%, color-mix(in srgb, var(--stage-color) 14%, transparent), transparent 70%);
+  }
+  .back-link{
+    background:none; border:none; color:var(--muted);
+    font-size:0.88rem; cursor:pointer; padding:0; margin-bottom:28px;
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:inherit;
+  }
+  .back-link:hover{color:var(--text);}
+  .detail-hero .stage-label{
+    font-size:0.85rem; margin-bottom:14px; font-weight:600;
+    letter-spacing:0.01em;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .detail-hero .stage-label::before{
+    content:"";
+    width:7px; height:7px; border-radius:50%;
+    background:currentColor;
+    display:inline-block;
+  }
+  .detail-hero h2{font-size:clamp(1.8rem,3.4vw,2.5rem); max-width:20ch;}
+  .detail-hero p{color:var(--muted); max-width:56ch; margin-top:16px; font-size:1.02rem;}
+
+  .service-block{
+    padding:44px 0;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:40px;
+  }
+  .service-block:last-of-type{border-bottom:none;}
+  .service-block h3{font-size:1.3rem; margin-bottom:12px; letter-spacing:-0.01em;}
+  .service-block .copy p{color:var(--muted); font-size:0.98rem; max-width:52ch;}
+  .service-block ul{
+    list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .service-block li{
+    font-size:0.9rem;
+    padding-left:18px;
+    position:relative;
+    color:var(--text);
+  }
+  .service-block li::before{
+    content:"";
+    position:absolute; left:0; top:8px;
+    width:6px; height:6px; border-radius:50%;
+    background:var(--stage-color);
+  }
+  @media (max-width:760px){
+    .service-block{grid-template-columns:1fr; gap:18px;}
+  }
+  .detail-cta{padding:48px 0 80px;}
+  .detail-cta .btn-primary + .btn-ghost{margin-left:14px;}
+
+  /* tool chips */
+  .tool-strip{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+  .chip{
+    font-size:0.85rem; padding:8px 16px; border-radius:100px;
+    border:1px solid var(--line); color:var(--muted);
+    background:var(--navy-2);
+    transition:border-color .18s ease, color .18s ease, transform .18s ease;
+  }
+  .chip:hover{border-color:var(--teal); color:var(--text); transform:translateY(-2px);}
+
+  /* ---------- APPROACH ---------- */
+  .approach-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:32px;}
+  .approach-item{position:relative; padding-top:24px;}
+  .approach-item::before{
+    content:"";
+    position:absolute; top:0; left:0;
+    width:38px; height:3px; border-radius:2px;
+    background:linear-gradient(90deg, var(--gold), var(--teal));
+  }
+  .approach-item h3{font-size:1.05rem; margin-bottom:10px;}
+  .approach-item p{color:var(--muted); font-size:0.92rem;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    background:linear-gradient(150deg, var(--navy-2), var(--navy-3));
+    border:1px solid var(--line);
+    border-radius:24px; padding:56px;
+    display:grid; grid-template-columns:1.2fr 0.8fr; gap:40px; align-items:center;
+    box-shadow:0 40px 90px -40px rgba(79,195,176,0.18);
+  }
+  .contact h2{font-size:clamp(1.6rem,3vw,2.1rem); max-width:18ch;}
+  .contact p{color:var(--muted); margin-top:14px; max-width:42ch;}
+  .contact-panel{background:linear-gradient(160deg, var(--navy-1), var(--navy-0)); border:1px solid var(--line); border-radius:16px; padding:26px;}
+  .contact-panel .label{font-size:0.78rem; color:var(--muted); margin-bottom:4px;}
+  .contact-panel .value{font-size:1.02rem; margin-bottom:18px; word-break:break-word;}
+  .contact-panel .value:last-child{margin-bottom:0;}
+
+  footer{border-top:1px solid var(--line); padding:32px 0;}
+  footer .wrap{display:flex; justify-content:space-between; align-items:center; font-size:0.82rem; color:var(--muted); flex-wrap:wrap; gap:10px;}
+
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero{padding:64px 0 64px;}
+    .approach-grid{grid-template-columns:1fr;}
+    .contact{grid-template-columns:1fr; padding:36px 24px;}
+    .nav-links{display:none;}
+  }
+  @media (max-width:520px){
+    .wrap{padding:0 20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-aurora" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="brand">Deep Data Company</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#tools">Tools</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Start a project</a>
+  </div>
+</header>
+
+<div id="main-view">
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Data engineering &amp; analytics services</p>
+      <h1>We build the data infrastructure that turns raw records into <span class="accent">trusted answers.</span></h1>
+      <p class="lead">Deep Data Company specializes in warehousing, pipelines, access governance, and the BI layer that sits on top of it — for teams who need their data to be correct, secure, and fast to query.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#contact">Start a project</a>
+        <a class="btn-ghost" href="#services">See the services</a>
+      </div>
+    </div>
+
+    <div class="pipeline-frame">
+      <div class="cap"><span>Source</span><span>Warehouse</span><span>Secured</span><span>BI</span></div>
+      <svg viewBox="0 0 420 220" width="100%" role="img" aria-label="Animated diagram of data flowing from source systems through a warehouse and security layer into BI dashboards">
+        <defs>
+          <path id="pipe-path" d="M 30 110 C 120 110, 120 60, 190 60 C 260 60, 260 150, 330 150 C 370 150, 380 110, 400 110" />
+        </defs>
+        <path d="M 30 110 C 120 110, 120 60, 190 60 C 260 60, 260 150, 330 150 C 370 150, 380 110, 400 110"
+              fill="none" stroke="var(--line)" stroke-width="2"/>
+        <g class="node-pulse"><circle cx="30" cy="110" r="9" fill="none" stroke="var(--teal)" stroke-width="2"/></g>
+        <circle cx="190" cy="60" r="9" fill="var(--navy-2)" stroke="var(--gold)" stroke-width="2"/>
+        <circle cx="330" cy="150" r="9" fill="var(--navy-2)" stroke="var(--teal)" stroke-width="2"/>
+        <g class="node-pulse"><circle cx="400" cy="110" r="9" fill="none" stroke="var(--gold)" stroke-width="2"/></g>
+        <rect x="323" y="144" width="14" height="10" rx="2" fill="none" stroke="var(--teal)" stroke-width="1.4"/>
+        <path d="M 326 144 v -4 a 4 4 0 0 1 8 0 v 4" fill="none" stroke="var(--teal)" stroke-width="1.4"/>
+        <circle r="4" fill="var(--gold)" class="pipe-particle p1">
+          <animateMotion dur="3.6s" repeatCount="indefinite" begin="0s"><mpath href="#pipe-path"/></animateMotion>
+        </circle>
+        <circle r="4" fill="var(--teal)" class="pipe-particle p2">
+          <animateMotion dur="3.6s" repeatCount="indefinite" begin="1.2s"><mpath href="#pipe-path"/></animateMotion>
+        </circle>
+        <circle r="4" fill="var(--gold)" class="pipe-particle p3">
+          <animateMotion dur="3.6s" repeatCount="indefinite" begin="2.4s"><mpath href="#pipe-path"/></animateMotion>
+        </circle>
+        <text x="190" y="42" fill="var(--muted)" font-size="10" font-family="Inter" text-anchor="middle">medallion layers</text>
+        <text x="330" y="176" fill="var(--muted)" font-size="10" font-family="Inter" text-anchor="middle">row / column access</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="what-we-do">
+  <div class="wrap">
+    <div class="section-head" style="max-width:680px; margin-bottom:0;">
+      <p class="eyebrow">What we do</p>
+      <h2>We turn scattered, unreliable data into infrastructure your business can act on</h2>
+      <p>Every dashboard, model, and decision is only as good as the data underneath it. We design and operate the layer most companies never see — warehouses that hold up, pipelines that don't fail silently, access rules that hold under audit, and dashboards people actually trust — so your team spends time acting on data, not arguing about whose number is right.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">What we do</p>
+      <h2>Core service areas</h2>
+      <p>Click a tile for the in-depth breakdown of what's included.</p>
+    </div>
+
+    <div class="service-grid">
+      <button class="service-tile" style="--stage-color:var(--gold)" data-service="data-warehousing" aria-haspopup="true">
+        <div class="icon-badge"><svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="4" y="4" width="22" height="6" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="4" y="12" width="22" height="6" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="4" y="20" width="22" height="6" rx="1.5" stroke="currentColor" stroke-width="2"/></svg></div>
+        <div>
+          <h3>Data Warehousing</h3>
+          <ul class="tile-list">
+            <li>ETL Development</li>
+            <li>Medallion Architecture</li>
+          </ul>
+        </div>
+        <p class="open-cue">View details</p>
+      </button>
+
+      <button class="service-tile" style="--stage-color:var(--teal)" data-service="data-engineering" aria-haspopup="true">
+        <div class="icon-badge"><svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="7" cy="15" r="4" stroke="currentColor" stroke-width="2"/><circle cx="23" cy="15" r="4" stroke="currentColor" stroke-width="2"/><path d="M11 15h8" stroke="currentColor" stroke-width="2"/><path d="M18 12l3 3-3 3" stroke="currentColor" stroke-width="2" fill="none"/></svg></div>
+        <div>
+          <h3>Data Engineering</h3>
+          <ul class="tile-list">
+            <li>Pipeline Building</li>
+            <li>Orchestration</li>
+            <li>Alert Mechanisms</li>
+          </ul>
+        </div>
+        <p class="open-cue">View details</p>
+      </button>
+
+      <button class="service-tile" style="--stage-color:var(--gold)" data-service="data-security" aria-haspopup="true">
+        <div class="icon-badge"><svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="7" y="14" width="16" height="12" rx="2" stroke="currentColor" stroke-width="2"/><path d="M11 14v-3a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="2" fill="none"/></svg></div>
+        <div>
+          <h3>Data Security &amp; Governance</h3>
+          <ul class="tile-list">
+            <li>Row-Level Security</li>
+            <li>Column-Level Security</li>
+            <li>Group-Based Access</li>
+          </ul>
+        </div>
+        <p class="open-cue">View details</p>
+      </button>
+
+      <button class="service-tile" style="--stage-color:var(--teal)" data-service="business-intelligence" aria-haspopup="true">
+        <div class="icon-badge"><svg class="icon" width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M4 24V14l7-6 7 6v10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M15 24v-7l7-6 4 3.5" stroke="currentColor" stroke-width="2" fill="none"/></svg></div>
+        <div>
+          <h3>Business Intelligence</h3>
+          <ul class="tile-list">
+            <li>Data Integration</li>
+            <li>BI Dashboard Creation</li>
+          </ul>
+        </div>
+        <p class="open-cue">View details</p>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="tools">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Platforms</p>
+      <h2>Tools we work in</h2>
+      <p>Platform-agnostic by design — the right tool depends on what your team already runs on.</p>
+    </div>
+    <div class="tool-strip">
+      <span class="chip">Looker</span>
+      <span class="chip">Tableau</span>
+      <span class="chip">Domo</span>
+      <span class="chip">Power BI</span>
+      <span class="chip">Pentaho</span>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="approach">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How we work</p>
+      <h2>Built to be handed off, not babysat</h2>
+      <p>Every engagement ends with something your team can maintain — not a black box only we understand.</p>
+    </div>
+    <div class="approach-grid">
+      <div class="approach-item">
+        <h3>Audit first</h3>
+        <p>Before building anything, we map what exists — sources, current pipelines, who touches what — so the solution fits your reality, not a generic template.</p>
+      </div>
+      <div class="approach-item">
+        <h3>Document as we go</h3>
+        <p>Access rules, pipeline logic, and dashboard sources are documented as they're built, not reconstructed afterward.</p>
+      </div>
+      <div class="approach-item">
+        <h3>Hand off cleanly</h3>
+        <p>Your team gets a walkthrough and clear ownership of every layer — warehouse, pipeline, security rules, and dashboards.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <h2>Have a data problem worth solving properly?</h2>
+        <p>Tell us what you're working with — current stack, main pain point, and rough timeline — and we'll follow up with next steps.</p>
+        <div class="hero-actions" style="margin-top:26px;">
+          <a class="btn-primary" href="mailto:info@deepdatacompany.com">Email us</a>
+        </div>
+      </div>
+      <div class="contact-panel">
+        <div class="label">Email</div>
+        <div class="value">info@deepdatacompany.com</div>
+        <div class="label">Based in</div>
+        <div class="value">Remote — available for global engagements</div>
+        <div class="label">Typical engagement</div>
+        <div class="value">2–8 weeks, scoped per project</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- ============ DETAIL PAGES ============ -->
+
+<div class="service-detail" id="detail-data-warehousing" style="--stage-color:var(--gold)">
+  <div class="wrap detail-hero">
+    <button class="back-link" data-back>&larr; Back to services</button>
+    <p class="stage-label" style="color:var(--gold)">Data Warehousing</p>
+    <h2 tabindex="-1">Modeling data so it stays queryable as it grows</h2>
+    <p>Raw data from operational systems is rarely fit to query directly. This is the layer where it gets structured, cleaned, and organized into something reliable — the foundation everything else in the pipeline depends on.</p>
+  </div>
+  <div class="wrap">
+    <div class="service-block" style="--stage-color:var(--gold)">
+      <div class="copy">
+        <h3>Data Warehouse ETL Development</h3>
+        <p>We design extract, transform, and load workflows that pull from your source systems — databases, APIs, flat files — and land clean, structured data in the warehouse. Built for incremental loads, schema drift, and repeatable runs, not one-off scripts.</p>
+      </div>
+      <ul>
+        <li>Incremental and full-load pipelines</li>
+        <li>Schema change handling</li>
+        <li>Data quality validation at each load</li>
+        <li>Connectors for databases, APIs, and flat files</li>
+      </ul>
+    </div>
+    <div class="service-block" style="--stage-color:var(--gold)">
+      <div class="copy">
+        <h3>Medallion Architecture</h3>
+        <p>Data is organized into bronze, silver, and gold layers — raw, cleaned, and business-ready — so every transformation is traceable and reprocessing never means starting over from the source.</p>
+      </div>
+      <ul>
+        <li>Bronze layer: raw, immutable ingestion</li>
+        <li>Silver layer: cleaned and conformed data</li>
+        <li>Gold layer: aggregated, business-ready tables</li>
+        <li>Clear lineage between every layer</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap detail-cta">
+    <a class="btn-primary" href="mailto:info@deepdatacompany.com">Discuss this service</a>
+    <a class="btn-ghost" data-back href="#">Back to all services</a>
+  </div>
+</div>
+
+<div class="service-detail" id="detail-data-engineering" style="--stage-color:var(--teal)">
+  <div class="wrap detail-hero">
+    <button class="back-link" data-back>&larr; Back to services</button>
+    <p class="stage-label" style="color:var(--teal)">Data Engineering</p>
+    <h2 tabindex="-1">Moving data on schedule, with someone watching</h2>
+    <p>A warehouse is only useful if data actually arrives in it, on time, in the right order. This is the layer that moves it there and tells you the moment something breaks.</p>
+  </div>
+  <div class="wrap">
+    <div class="service-block" style="--stage-color:var(--teal)">
+      <div class="copy">
+        <h3>Data Pipeline Building</h3>
+        <p>End-to-end pipelines connecting your source systems to the warehouse, whether that's a nightly batch job or a near-real-time stream. Every pipeline is idempotent, so a re-run never duplicates or corrupts data.</p>
+      </div>
+      <ul>
+        <li>Batch and streaming pipelines</li>
+        <li>Idempotent, safely re-runnable jobs</li>
+        <li>Built-in error handling and retries</li>
+        <li>Documented source-to-target mappings</li>
+      </ul>
+    </div>
+    <div class="service-block" style="--stage-color:var(--teal)">
+      <div class="copy">
+        <h3>Data Orchestration</h3>
+        <p>Jobs rarely run in isolation — one depends on another finishing first. We set up scheduling that respects those dependencies, so downstream tables never build on incomplete upstream data.</p>
+      </div>
+      <ul>
+        <li>DAG-based scheduling</li>
+        <li>Cross-system dependency management</li>
+        <li>Backfill and re-run support</li>
+        <li>SLA monitoring on critical jobs</li>
+      </ul>
+    </div>
+    <div class="service-block" style="--stage-color:var(--teal)">
+      <div class="copy">
+        <h3>Data Alert Mechanisms</h3>
+        <p>When a pipeline fails or the data itself looks wrong — a row count drops to zero, a value falls outside its normal range — you hear about it before your stakeholders do, not after.</p>
+      </div>
+      <ul>
+        <li>Pipeline failure alerts</li>
+        <li>Data anomaly detection</li>
+        <li>Threshold-based notifications</li>
+        <li>Delivered to Slack, email, or on-call tools</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap detail-cta">
+    <a class="btn-primary" href="mailto:info@deepdatacompany.com">Discuss this service</a>
+    <a class="btn-ghost" data-back href="#">Back to all services</a>
+  </div>
+</div>
+
+<div class="service-detail" id="detail-data-security" style="--stage-color:var(--gold)">
+  <div class="wrap detail-hero">
+    <button class="back-link" data-back>&larr; Back to services</button>
+    <p class="stage-label" style="color:var(--gold)">Data Security &amp; Governance</p>
+    <h2 tabindex="-1">The right people see the right data — nothing more</h2>
+    <p>Before data reaches a dashboard, access rules decide who can see what. This layer keeps sensitive fields and restricted rows enforced consistently, everywhere the data is queried.</p>
+  </div>
+  <div class="wrap">
+    <div class="service-block" style="--stage-color:var(--gold)">
+      <div class="copy">
+        <h3>Row-Level Security</h3>
+        <p>Users see only the records relevant to them — a regional manager sees their region, a rep sees their own accounts — enforced at the query level, not by filtering in the dashboard.</p>
+      </div>
+      <ul>
+        <li>Region and role-based row filtering</li>
+        <li>Dynamic policies tied to user attributes</li>
+        <li>Consistent enforcement across every BI tool</li>
+      </ul>
+    </div>
+    <div class="service-block" style="--stage-color:var(--gold)">
+      <div class="copy">
+        <h3>Column-Level Security</h3>
+        <p>Sensitive fields — salaries, personal identifiers, contract terms — stay masked or hidden from anyone without explicit clearance, while the rest of the table remains fully usable.</p>
+      </div>
+      <ul>
+        <li>Masking of PII and other sensitive fields</li>
+        <li>Field-level permission sets</li>
+        <li>Audit-ready access logs</li>
+      </ul>
+    </div>
+    <div class="service-block" style="--stage-color:var(--gold)">
+      <div class="copy">
+        <h3>Group-Based Access Control</h3>
+        <p>Permissions are managed by team or group rather than one rule per person, so onboarding a new hire — or revoking access when someone leaves — takes one change, not a dozen.</p>
+      </div>
+      <ul>
+        <li>Role and group hierarchies</li>
+        <li>Centralized permission management</li>
+        <li>Faster onboarding and offboarding</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap detail-cta">
+    <a class="btn-primary" href="mailto:info@deepdatacompany.com">Discuss this service</a>
+    <a class="btn-ghost" data-back href="#">Back to all services</a>
+  </div>
+</div>
+
+<div class="service-detail" id="detail-business-intelligence" style="--stage-color:var(--teal)">
+  <div class="wrap detail-hero">
+    <button class="back-link" data-back>&larr; Back to services</button>
+    <p class="stage-label" style="color:var(--teal)">Business Intelligence</p>
+    <h2 tabindex="-1">Where the data finally reaches people</h2>
+    <p>All of the modeling, movement, and access control exists to support this: systems that talk to each other, and dashboards that people actually open every day.</p>
+  </div>
+  <div class="wrap">
+    <div class="service-block" style="--stage-color:var(--teal)">
+      <div class="copy">
+        <h3>Data Integration</h3>
+        <p>We connect the systems that would otherwise stay siloed — CRM, ERP, product analytics, spreadsheets someone still updates by hand — so information reconciles instead of contradicting itself across tools.</p>
+      </div>
+      <ul>
+        <li>API and database connectors</li>
+        <li>Real-time and batch synchronization</li>
+        <li>Master data reconciliation across systems</li>
+      </ul>
+    </div>
+    <div class="service-block" style="--stage-color:var(--teal)">
+      <div class="copy">
+        <h3>BI Dashboard Creation</h3>
+        <p>Dashboards built in whichever tool fits your stack — Looker, Tableau, Domo, Power BI, or Pentaho — designed around the questions each audience actually asks, on top of queries tuned to stay fast as data grows.</p>
+      </div>
+      <ul>
+        <li>Looker, Tableau, Domo, Power BI, Pentaho</li>
+        <li>Self-serve dashboard design</li>
+        <li>Performance-tuned underlying queries</li>
+        <li>Stakeholder-specific views</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap detail-cta">
+    <a class="btn-primary" href="mailto:info@deepdatacompany.com">Discuss this service</a>
+    <a class="btn-ghost" data-back href="#">Back to all services</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Deep Data Company. All rights reserved.</span>
+    <span>Data Warehousing · Data Engineering · Data Security &amp; Governance · Business Intelligence</span>
+  </div>
+</footer>
+
+<script>
+  const mainView = document.getElementById('main-view');
+  const detailPanels = Array.from(document.querySelectorAll('.service-detail'));
+
+  function showDetail(id){
+    const panel = document.getElementById('detail-' + id);
+    if(!panel) return false;
+    mainView.style.display = 'none';
+    detailPanels.forEach(p => p.classList.remove('is-active'));
+    panel.classList.add('is-active');
+    window.scrollTo(0,0);
+    const heading = panel.querySelector('h2');
+    if(heading) heading.focus();
+    return true;
+  }
+
+  function showMain(scrollTargetId){
+    detailPanels.forEach(p => p.classList.remove('is-active'));
+    mainView.style.display = '';
+    if(scrollTargetId){
+      const el = document.getElementById(scrollTargetId);
+      if(el){ el.scrollIntoView(); return; }
+    }
+    window.scrollTo(0,0);
+  }
+
+  function routeFromHash(){
+    const hash = location.hash.replace('#','');
+    if(hash && showDetail(hash)) return;
+    showMain(hash || null);
+  }
+
+  document.querySelectorAll('.service-tile').forEach(tile => {
+    tile.addEventListener('click', () => { location.hash = tile.dataset.service; });
+  });
+
+  document.querySelectorAll('[data-back]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      location.hash = '';
+      showMain();
+    });
+  });
+
+  window.addEventListener('hashchange', routeFromHash);
+  routeFromHash();
+</script>
+
+</body>
+</html>
