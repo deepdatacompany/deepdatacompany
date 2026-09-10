@@ -1,1 +1,0 @@
-Updated Deep Data Company site. Keep favicon.png, favicon-32.png and apple-touch-icon.png in the site root. Tool logos use Simple Icons CDN. Homepage architecture is interactive SVG; service tabs open detailed standalone pages.
